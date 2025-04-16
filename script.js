@@ -1,4 +1,8 @@
+
+(() => {
+    const form = document.querySelector('form')
 const inputValue = document.querySelector("#input-value")
+
 const submitBtn = document.querySelector('.submitbtn');
 
 const startBtn = document.querySelector('.startbtn')
@@ -6,38 +10,36 @@ const resultDiv = document.querySelector('.result')
 const guessedNums = document.querySelector('.guessed-num')
 
 
-let numToBeGuessed;
+let numToBeGuessed= Math.floor(Math.random() * 101)
 let yourGuesses = [];
+//global variable can create vulnurability. So we need Immediately Invoked Function Expression or IIFE
+// console.log(numToBeGuessed)
 startBtn.addEventListener('click', (e)=>{
-    e.preventDefault()
     numToBeGuessed= Math.floor(Math.random() * 101)
-    console.log(numToBeGuessed)
+    // console.log(numToBeGuessed)
     resultDiv.innerText = "Game started! Make a guess.";
     guessedNums.innerText = "";
     inputValue.value = ""
     yourGuesses = []
+    submitBtn.disabled = false;
+    startBtn.disabled = true
 })
 
 
-submitBtn.addEventListener('click', (e)=>{
+form.addEventListener('submit', (e)=>{
     e.preventDefault()
 
-    if(numToBeGuessed === undefined){
-        resultDiv.innerText = "Please start the game first";
-        return
-    }
     //numToBeGuessed= Math.floor(Math.random() * 101)
-    let guessedNum = parseInt(inputValue.value)
-    
-    if(isNaN(guessedNum)){
-        resultDiv.innerText = "Please enter a number!";
-    }
+    const guessedNum = parseInt(inputValue.value)
+
 
     yourGuesses.push(guessedNum)
     guessedNums.innerText = "Your guesses: " + yourGuesses.join(", ")
 
     if(numToBeGuessed == guessedNum){
-        resultDiv.innerHTML = `Yahoo! You have guessed the number by <span class="highlight"> ${yourGuesses.length}</span> trial(s)`
+        resultDiv.innerHTML = `Yahoo! You have guessed the number by <span class="highlight "> ${yourGuesses.length}</span> trial(s)`
+        submitBtn.disabled = true
+        startBtn.disabled = false
     }
     else if(numToBeGuessed > guessedNum){
         resultDiv.innerText = "Too low!"
@@ -45,5 +47,9 @@ submitBtn.addEventListener('click', (e)=>{
     else{
         resultDiv.innerText = "Too high!"
     }
+    form.reset()
+
 
 })
+  })();
+  
